@@ -1,0 +1,44 @@
+include <stdio.h>
+#include <stdbool.h>
+
+#define N 4
+
+void solveAssignmentProblem(int costMatrix[N][N]) {
+    int assignments[N] = {-1}; // Store the assignment of tasks to workers
+    bool workers[N] = {false}; // Indicates whether a worker is assigned
+    
+    for (int task = 0; task < N; task++) {
+        int minCost = 9999; // Initialize with a large value
+        int assignedWorker = -1;
+        
+        for (int worker = 0; worker < N; worker++) {
+            if (!workers[worker] && costMatrix[task][worker] < minCost) {
+                minCost = costMatrix[task][worker];
+                assignedWorker = worker;
+            }
+        }
+        
+        assignments[task] = assignedWorker;
+        workers[assignedWorker] = true;
+    }
+    
+    int totalCost = 0;
+    printf("Task Assignments:\n");
+    for (int task = 0; task < N; task++) {
+        int worker = assignments[task];
+        printf("Task %d -> Worker %d\n", task + 1, worker + 1);
+        totalCost += costMatrix[task][worker];
+    }
+    printf("Total Cost: %d\n", totalCost);
+}
+
+int main() {
+    int costMatrix[N][N] = {{7, 2, 5, 3},
+                            {4, 8, 2, 6},
+                            {9, 1, 5, 4},
+                            {3, 7, 6, 2}};
+    
+    solveAssignmentProblem(costMatrix);
+    
+    return 0;
+}
